@@ -1,0 +1,34 @@
+## Core .NET Build Folders ##
+# Never commit these. They are generated when you compile.
+[Bb]in/
+[Oo]bj/
+
+## Visual Studio & IDE Specifics ##
+# User preferences and cache files shouldn't be shared.
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Project Specific Files ##
+# Ignore local environment settings that might contain secrets
+appsettings.Development.json
+appsettings.Local.json
+
+## Docker & Infrastructure Data ##
+# CRITICAL: Since you are running Kafka locally, if you mapped
+# a volume to persist data (e.g., ./kafka_data), ignore it here.
+# Committing 1GB of Kafka logs to GitHub is a common mistake!
+kafka_data/
+kafka_logs/
+zookeeper_data/
+
+## OS System Files ##
+# Mac and Windows clutter
+.DS_Store
+Thumbs.db
+
+## Test Results ##
+TestResults/

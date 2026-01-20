@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="TrackerAPI/TrackerAPI.csproj" />
+  <Project Path="TrackerConsumer/TrackerConsumer.csproj" />
+  <Project Path="TrackerProducer/TrackerProducer.csproj" />
+</Solution>
