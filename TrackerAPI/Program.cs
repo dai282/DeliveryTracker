@@ -27,13 +27,12 @@ builder.Services.AddSignalR();
 // This tells .NET: "Start this class when the API boots up and keep it alive."
 builder.Services.AddHostedService<KafkaConsumerService>();
 
-// Add CORS (Cross-Origin Resource Sharing)
-// Vital because React (localhost:3000) is a different "origin" than .NET (localhost:5xxx)
+// Add CORS for Vite
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // We will build this tomorrow
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // SignalR requires credentials (cookies/headers) allowed
