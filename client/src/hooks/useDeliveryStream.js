@@ -8,7 +8,7 @@ function useDeliveryStream() {
   useEffect(() => {
     //1. Configure connection
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5172/trackingHub")
+      .withUrl("http://localhost:8080/trackingHub")
       .withAutomaticReconnect()
       .build();
 

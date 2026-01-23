@@ -22,22 +22,40 @@ public class ShipmentsController : ControllerBase
         // 1. Serialize the C# object to a JSON string
         var jsonString = JsonSerializer.Serialize(update);
 
-        // 2. Wrap it in a Kafka Message
-        var message = new Message<Null, string>
+        try
         {
-            Value = jsonString
-        };
+            // 2. Wrap it in a Kafka Message
+            var message = new Message<Null, string>
+            {
+                Value = jsonString
+            };
 
-        // 3. Send to Kafka (topic: "shipment-tracking")
-        // We await this to ensure Kafka received it before telling the HTTP client "OK"
-        var deliveryResult = await _producer.ProduceAsync("shipment-tracking", message);
+            // 3. Send to Kafka (topic: "shipment-tracking")
+            // We await this to ensure Kafka received it before telling the HTTP client "OK"
+            var deliveryResult = await _producer.ProduceAsync("shipment-tracking", message);
 
-        return Ok(new
+            return Ok(new
+            {
+                Status = "Sent to Kafka",
+                Offset = deliveryResult.Offset.Value,
+                Partition = deliveryResult.Partition.Value
+            });
+
+        }
+        catch (ProduceException<Null, string> e)
         {
-            Status = "Sent to Kafka",
-            Offset = deliveryResult.Offset.Value,
-            Partition = deliveryResult.Partition.Value
-        });
+            // 1. Log the specific Kafka error
+            Console.WriteLine($"Kafka Delivery Failed: {e.Error.Reason}");
+
+            return StatusCode(500, "Failed to deliver message to Kafka.");
+        }
+        catch (Exception ex)
+        {
+            // 2. Log any other error
+            Console.WriteLine($"Error: {ex.Message}");
+
+            return StatusCode(500, "An error occurred while processing the request.");
+        }
 
     }
 

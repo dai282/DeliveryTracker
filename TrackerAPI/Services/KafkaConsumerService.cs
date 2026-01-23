@@ -10,13 +10,14 @@ namespace TrackerAPI.Services
     {
         private readonly string _topic = "shipment-tracking";
         private readonly string _groupId = "tracker-dashboard";
-        private readonly string _bootstrapServers = "localhost:9092";
+        private readonly string _bootstrapServers;
 
         // IHubContext allows us to talk to SignalR clients from OUTSIDE the Hub itself.
         private readonly IHubContext<TrackingHub> _hubContext;
 
-        public KafkaConsumerService(IHubContext<TrackingHub> hubContext)
+        public KafkaConsumerService(IHubContext<TrackingHub> hubContext, IConfiguration configuration)
         {
+            _bootstrapServers = configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
             _hubContext = hubContext;
         }
 

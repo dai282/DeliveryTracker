@@ -7,10 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1. REGISTER KAFKA PRODUCER AS A SINGLETON
 // We create one instance here, and the app will reuse it forever.
+
+// Get the connection string from appsettings or Environment variables
+var bootstrapServers = builder.Configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
+
 var producerConfig = new ProducerConfig
 {
     // Kafka broker address (how to connect to it)
-    BootstrapServers = "localhost:9092",
+    BootstrapServers = bootstrapServers,
     ClientId = "TrackerAPI"
 };
 
